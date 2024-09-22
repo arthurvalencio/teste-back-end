@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::view('/', 'home')->name('home');
+
+Route::view('/listCategories', 'categories.list')->name('categories.list');
+Route::view('/categories/create', 'categories.create')->name('categories.create');
+Route::view('/categories/create/{id}', 'categories.create')->name('categories.edit');
+Route::middleware(['validate.category'])->group(function () {
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
 });
+
+Route::view('/products/create', 'products.create')->name('products.create');
+Route::view('/products/create/{id}', 'products.create')->name('products.edit');
